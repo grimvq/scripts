@@ -1,0 +1,40 @@
+repeat wait() until game:IsLoaded() and game:WaitForChild"Players";
+
+        -- By xaxa/zxciaz/fiviefourteen/xix on v3rm
+        local Players, Uis, SGui = game:GetService"Players", game:GetService"UserInputService", game:GetService"StarterGui"; -- Services
+        local Client, AntiGH = Players.LocalPlayer, true;
+
+        function Notify(NTitle, NText, NIcon, NDuration)
+            SGui:SetCore("SendNotification", {
+                Title = NTitle;
+                Text = NText;
+                Icon = NIcon;
+                Duration = NDuration;
+            })
+        end
+
+        function StateChangedEvent(T, Changed)
+            if AntiGH == true then
+                if Client and Client.Character and Client.Character:FindFirstChildOfClass"Humanoid" then
+                    if Changed == Enum.HumanoidStateType.FallingDown or Changed == Enum.HumanoidStateType.PlatformStanding then
+                        Client.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Running);Client.Character.Humanoid.PlatformStand = false -- Credits to Aidez for this part
+                    end
+                end
+            end
+        end
+        Client.Character:WaitForChild"Humanoid".StateChanged:Connect(StateChangedEvent)
+
+        function CharacterAddedEvent()
+            Client.Character:WaitForChild"Humanoid";
+            Client.Character.Humanoid.StateChanged:Connect(StateChangedEvent)
+        end
+        Client.CharacterAdded:Connect(CharacterAddedEvent)
+
+        Uis.InputBegan:Connect(function(Key)
+            if not Uis:GetFocusedTextBox() then
+                if Key.KeyCode == Enum.KeyCode.RightAlt then
+                    AntiGH = not AntiGH
+                    Notify("xaxa", "Anti Ground-Hit: "..tostring(AntiGH), nil, 3)
+                end
+            end
+        end)
