@@ -1,0 +1,6 @@
+local LocalPlayer = game:GetService'Players'.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+local Used = Character:FindFirstChild'Used'
+if Used then
+   Used:Destroy()
+end
