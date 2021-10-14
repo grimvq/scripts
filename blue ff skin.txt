@@ -1,0 +1,29 @@
+local localp = game:GetService("Players").LocalPlayer
+local RS = game:GetService("RunService")
+function notify(NTitle, NText, NIcon, NDuration)
+    game.StarterGui:SetCore("SendNotification",{
+		Title = NTitle;
+		Text = NText;
+		Icon = NIcon;
+		Duration = NDuration;
+	})
+ end
+  notify("fourteen", "Executed Colourful guns!")
+RS.RenderStepped:Connect(function()
+    local function GunSkins(GunTable, Color, Material)
+		for _, v in pairs(GunTable:GetChildren()) do
+			if v:IsA"Tool" and v:FindFirstChild"Fire" then
+				for _, i in pairs(v:GetDescendants()) do 
+					if i:IsA"UnionOperation" or i:IsA"Part" or i:IsA"MeshPart" then 
+						if i:IsA"UnionOperation" then 
+							i.UsePartColor = true
+						end
+						i.Material = Material
+						i.Color = Color
+					end
+				end
+			end
+		end
+	end
+	GunSkins(localp.Backpack, Color3.fromRGB(0,0,255), "ForceField") -- you can change color here.
+end)
